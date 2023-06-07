@@ -7,10 +7,7 @@ COPY . /app
 # Set working directory
 WORKDIR /app
 
-# List files in /app and /app/include
-RUN ls -l /app && ls -l /app/include
-
-# Compile your program
+# Compile program
 RUN g++ -o apiServer apiServer.cpp -Iinclude -Wall -Wextra -g3
 
 # Run your program when the container starts

@@ -5,26 +5,36 @@ int main(void)
 {
     using namespace httplib;
 
+    int port = 8080;
+
     Server svr;
 
-    svr.Get("/resource", [](const Request& req, Response& res) {
+    //Gets a simple string
+    svr.Get("/get", [](const Request& req, Response& res) {
         res.set_content("Hello World.", "text/plain");
     });
 
-    // svr.Post("/resource", [](const Request& req, Response& res) {
-    //     res.set_content("Resource created successfully.", "text/plain");
-    // });
+    //JSON version
+    svr.Get("/jget", [](const Request& req, Response& res) {
+    std::string json = R"({"message": "Hello World."})";
+    res.set_content(json, "application/json");
+    });
 
-    // svr.Put("/resource", [](const Request& req, Response& res) {
-    //     res.set_content("Resource updated successfully.", "text/plain");
-    // });
+    svr.Post("/post", [](const Request& req, Response& res) {
+        res.set_content("World has been made", "text/plain");
+    });
 
-    // svr.Delete("/resource", [](const Request& req, Response& res) {
-    //     res.set_content("Resource deleted successfully.", "text/plain");
-    // });
+    svr.Put("/put", [](const Request& req, Response& res) {
+        res.set_content("World has been edited", "text/plain");
+    });
 
-    std::cout << "Server listening 8080" << std::endl;
-    svr.listen("0.0.0.0", 8080);
+    svr.Delete("/delete", [](const Request& req, Response& res) {
+        res.set_content("World has been deleted", "text/plain");
+    });
+
+
+    std::cout << "Server listening on port " << port << std::endl;
+    svr.listen("0.0.0.0", port);
 
     return 0;
 }
